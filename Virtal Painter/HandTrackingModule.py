@@ -72,7 +72,7 @@ def main():
     while True:
         success, img = cap.read()   
         img = detector.findHands(img) 
-        lmList = detector.FindPosition(img)
+        lmList = detector.FindPosition(img,draw = False)
         # img = detector.findHands(img,draw = False)            #To stop drawing
         # lmList = detector.FindPosition(img, draw = False)     #To stop custom circle
         if len(lmList) !=0:
@@ -89,14 +89,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-

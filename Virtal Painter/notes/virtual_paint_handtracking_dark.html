@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Virtual Paint using Hand Tracking</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f1115;
+            color: #e6e6e6;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            color: #ffffff;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4fc3f7;
+        }
+
+        section {
+            background: #1a1d24;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th, table td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background: #252a34;
+            color: #4fc3f7;
+        }
+
+        table td {
+            background: #1f232d;
+        }
+
+        code {
+            background: #2b2f3a;
+            padding: 4px 8px;
+            border-radius: 5px;
+            color: #00e676;
+            font-size: 14px;
+        }
+
+        pre {
+            background: #000000;
+            color: #00ff88;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+
+        .summary {
+            background: #111827;
+            border-left: 5px solid #4fc3f7;
+            padding: 15px;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #e0f2fe;
+        }
+
+        /* Scrollbar (optional but nice) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1115;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4fc3f7;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Virtual Paint using Hand Tracking</h1>
+
+<!-- ===================== -->
+<section>
+    <h2>1️⃣ Hand Tracking Module</h2>
+
+    <h3>Purpose</h3>
+    <p>Detect hand, track finger landmarks, and identify finger states (up/down).</p>
+
+    <h3>Libraries Used</h3>
+    <table>
+        <tr><th>Library</th><th>Use</th></tr>
+        <tr><td>OpenCV</td><td>Camera input, drawing, display</td></tr>
+        <tr><td>MediaPipe</td><td>Hand detection and tracking</td></tr>
+        <tr><td>Python</td><td>Program logic</td></tr>
+    </table>
+
+    <h3>Core Functions</h3>
+    <table>
+        <tr><th>Function</th><th>Use</th></tr>
+        <tr><td>HandDetector()</td><td>Initialize hand detection model</td></tr>
+        <tr><td>findHands(img)</td><td>Detect hands and draw landmarks</td></tr>
+        <tr><td>FindPosition(img)</td><td>Return 21 landmark positions</td></tr>
+        <tr><td>fingersUP()</td><td>Detect which fingers are up</td></tr>
+    </table>
+
+    <h3>Hand Tracking Flow</h3>
+    <pre>
+Camera Frame
+   ↓
+Convert to RGB
+   ↓
+MediaPipe Hands.process()
+   ↓
+Detect landmarks (21 points)
+   ↓
+Convert to pixel coordinates
+   ↓
+Return landmark list
+    </pre>
+</section>
+
+<!-- ===================== -->
+<section>
+    <h2>2️⃣ Virtual Paint Module</h2>
+
+    <h3>Purpose</h3>
+    <p>Draw on the screen using finger gestures.</p>
+
+    <h3>Libraries Used</h3>
+    <table>
+        <tr><th>Library</th><th>Use</th></tr>
+        <tr><td>OpenCV</td><td>Drawing, masking, display</td></tr>
+        <tr><td>NumPy</td><td>Create drawing canvas</td></tr>
+        <tr><td>OS</td><td>Load toolbar images</td></tr>
+        <tr><td>HandTrackingModule</td><td>Gesture input</td></tr>
+    </table>
+
+    <h3>Important Variables</h3>
+    <table>
+        <tr><th>Variable</th><th>Use</th></tr>
+        <tr><td>imgCanvas</td><td>Stores permanent drawing</td></tr>
+        <tr><td>xp, yp</td><td>Previous finger position</td></tr>
+        <tr><td>drawcolor</td><td>Current brush color</td></tr>
+        <tr><td>brushThickness</td><td>Brush size</td></tr>
+        <tr><td>eraserThickness</td><td>Eraser size</td></tr>
+    </table>
+
+    <h3>Canvas Creation</h3>
+    <code>imgCanvas = np.zeros((720, 1280, 3), np.uint8)</code>
+
+    <h3>Virtual Paint Flow</h3>
+    <pre>
+Read Camera Frame
+   ↓
+Flip Image
+   ↓
+Detect Hand
+   ↓
+Get Landmark Positions
+   ↓
+Check Fingers
+   ↓
+2 Fingers → Select Tool
+1 Finger → Draw
+   ↓
+Update Canvas
+   ↓
+Merge Canvas with Frame
+   ↓
+Display Output
+    </pre>
+</section>
+
+<!-- ===================== -->
+<section>
+    <h2>3️⃣ Hand Tracking + Virtual Paint (Combined)</h2>
+
+    <h3>Full System Flow</h3>
+    <pre>
+START
+ │
+ ├─ Open Webcam
+ ├─ Read Frame
+ ├─ Flip Image
+ ├─ Hand Detection
+ ├─ Landmark Extraction
+ ├─ Finger State Detection
+ │
+ ├─ IF 2 Fingers:
+ │     └─ Select Color / Tool
+ │
+ ├─ IF 1 Finger:
+ │     └─ Draw on Canvas
+ │
+ ├─ Merge Canvas + Frame
+ ├─ Display Output
+ └─ LOOP
+    </pre>
+
+    <div class="summary">
+        Camera → Hand → Gesture → Paint → Canvas → Display
+    </div>
+</section>
+
+</body>
+</html>
+
+
+<!-- End of File -->

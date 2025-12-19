@@ -7,11 +7,17 @@ import HandTrackingModule as htm
 # venv\scripts\activate
 # python virtualpaint.py
 
+####################
+brushThickness = 15
+eraserThickness = 135
+####################
+
 #1 Import Image
 #2 Find Hand Landmarks
 #3 Check up finger
 #4 Selection Mode: Two finger up
 #5 Drawing mode  : One finger up
+xp,yp = 0,0
 
 
 folderPath = "Mini Project UI"
@@ -35,6 +41,8 @@ img1 = cv2.imread("Mini Project UI/1.jpg")
 
 detector = htm.HandDetector(detectcon=0.85)
 
+imgCanvas = np.zeros((720, 1280, 3), np.uint8)
+
 while True:
     #1 Import Image
     success,img = cap.read()            
@@ -57,8 +65,9 @@ while True:
 
         #4 Selection Mode: Two finger up
         if fingers[1] and fingers[2]:
-            print("Selection Mode")
+            # print("Selection Mode")
             # cv2.rectangle(img, (x1,y1 - 25), (x2, y2 + 25), (255, 0, 255), cv2.FILLED)
+            xp,yp= 0,0
 
             if y1 < 200:
                 if 225 < x1 < 415:
@@ -77,11 +86,30 @@ while True:
 
         #5 Drawing mode  : One finger up
         if fingers[1] and fingers[2]==False:
-            print("Drawing Mode")
+            # print("Drawing Mode")
             cv2.circle(img, (x1,y1), 25, drawcolor, cv2.FILLED)
+            
+            if( xp == 0 and yp == 0):
+                xp,yp = x1,y1
 
+            if drawcolor == (0,0,0):
+                cv2.line(img, (xp,yp), (x1,y1), drawcolor, eraserThickness)
+                cv2.line(imgCanvas, (xp,yp), (x1,y1), drawcolor, eraserThickness)
+            else:
+                cv2.line(img, (xp,yp), (x1,y1), drawcolor, brushThickness)
+                cv2.line(imgCanvas, (xp,yp), (x1,y1), drawcolor, brushThickness)
+
+            xp,yp = x1,y1
+
+        imgGray = cv2.cvtColor(imgCanvas, cv2.COLOR_BGR2GRAY)
+        _, imgInv = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY_INV)
+        imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
+        img = cv2.bitwise_and(img, imgInv)
+        img = cv2.bitwise_or(img, imgCanvas)
 
     #Setting header imgae
     img[0:100, 0:1280] = header
+    img = cv2.addWeighted(img,0.5,imgCanvas,0.5,0)
     cv2.imshow("Image",img)
+    cv2.imshow("Canvas",imgCanvas)
     cv2.waitKey(1)
