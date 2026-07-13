@@ -2,41 +2,44 @@ import cv2
 import numpy as np
 import time
 import os
-import HandTrackingModule as htm
+import src.HandTrackingModule as htm
 
-# venv\scripts\activate
-# python virtualpaint.py
+"""
+Ths file is divided into 5 parts
+1. Import Image
+2. Find Hand Landmarks
+3. Check up finger
+4. Selection Mode: Two finger up
+5. Drawing mode  : One finger up
+"""
 
-####################
 brushThickness = 15
 eraserThickness = 135
-####################
 
-#1 Import Image
-#2 Find Hand Landmarks
-#3 Check up finger
-#4 Selection Mode: Two finger up
-#5 Drawing mode  : One finger up
 xp,yp = 0,0
 
+folderPath = "assets/ui"
 
-folderPath = "Mini Project UI"
-myList = os.listdir(folderPath)
-# print(myList)
+myList = [
+    "red_selected.jpg",
+    "blue_selected.jpg",
+    "purple_selected.jpg",
+    "eraser_selected.jpg",
+]
 
 overlayList = []
-for impath in myList:
-    image = cv2.imread(f'{folderPath}/{impath}')
+for imgName in myList:
+    image = cv2.imread(os.path.join(folderPath, imgName))
     overlayList.append(image)
-# print(len(overlayList))
 
 header = overlayList[0]
+
 drawcolor = (255,0,0)
 cap = cv2.VideoCapture(0)
 cap.set(3,1280)
 cap.set(4,720)
 
-img1 = cv2.imread("Mini Project UI/1.jpg")
+# img1 = cv2.imread("assets/ui/red_selected.jpg")
 # print("Image shape:", img1.shape)  # (height, width, channels)
 
 detector = htm.HandDetector(detectcon=0.85)
@@ -44,6 +47,7 @@ detector = htm.HandDetector(detectcon=0.85)
 imgCanvas = np.zeros((720, 1280, 3), np.uint8)
 
 while True:
+
     #1 Import Image
     success,img = cap.read()            
     img = cv2.flip(img,1)
@@ -53,7 +57,6 @@ while True:
     lmList = detector.FindPosition(img, draw=False)
 
     if len(lmList) !=0:
-        # print(lmList)
         # tip of index finger
         x1, y1 = lmList[8][1:]
         # tip of middle finger
@@ -65,7 +68,6 @@ while True:
 
         #4 Selection Mode: Two finger up
         if fingers[1] and fingers[2]:
-            # print("Selection Mode")
             # cv2.rectangle(img, (x1,y1 - 25), (x2, y2 + 25), (255, 0, 255), cv2.FILLED)
             xp,yp= 0,0
 
@@ -86,7 +88,6 @@ while True:
 
         #5 Drawing mode  : One finger up
         if fingers[1] and fingers[2]==False:
-            # print("Drawing Mode")
             cv2.circle(img, (x1,y1), 25, drawcolor, cv2.FILLED)
             
             if( xp == 0 and yp == 0):
