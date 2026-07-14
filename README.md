@@ -22,7 +22,7 @@ Controls:
 
 ---
 # Installation
-
+- Run these all code in terminal depending on Operating System.
 #### 1. Clone Repository
 	git clone `https://github.com/ShivamDevHere/virtual-paint-opencv-mediapipe` 
 	`cd virtual-onscreen-paint-using-opencv-and-mediapipe-in-python`
