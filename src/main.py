@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import time
 import os
-import src.HandTrackingModule as htm
+import HandTrackingModule as htm
 
 """
 Ths file is divided into 5 parts
