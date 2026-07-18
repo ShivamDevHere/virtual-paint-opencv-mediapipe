@@ -1,12 +1,39 @@
 # Virtual On-screen Paint Using OpenCV And MediaPipe
 
-This project uses your webcam to detect and track your hand using MediaPipe and OpenCV, allowing you to draw on a virtual canvas using hand gestures.
+<table>
+<tr>
+<td width="60%">
 
-Controls:
+### How It Works
+
+This project uses your webcam to detect and track your hand using **MediaPipe** and **OpenCV**, allowing you to draw on a virtual canvas using hand gestures.
+
+**Controls:**
 - ☝️ Raise only your index finger to draw.
 - ✌️ Raise your index and middle fingers to enter selection mode.
 - Hover over a tool in the top toolbar to select a color or the eraser.
 - Press `Ctrl + C` in the terminal to stop the application.
+
+</td>
+
+<td width="40%" align="center">
+
+<img src="assets/demo.gif" width="300"/>
+
+</td>
+</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 ### Table of Contents
