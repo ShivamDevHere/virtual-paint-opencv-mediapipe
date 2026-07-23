@@ -3,3 +3,5 @@ __pycache__/
 
 # IDE settings
 .vscode/
+
+.obsidian/

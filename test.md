@@ -1,4 +1,0 @@
-
-
-# Virtual On-Screen Paint
-
