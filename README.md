@@ -54,12 +54,19 @@ This project uses your webcam to detect and track your hand using **MediaPipe** 
 	git clone `https://github.com/ShivamDevHere/virtual-paint-opencv-mediapipe` 
 	`cd virtual-onscreen-paint-using-opencv-and-mediapipe-in-python`
 #### 2. Create a virtual environment
-```**Windows**
+
+- **Windows**
+
+```
+
 	python -m venv venv
 	venv\Scripts\activate
 ```
 
-```**Linux/macOS**
+- **Linux/macOS**
+
+```
+
 	python3 -m venv venv
 	source venv/bin/activate
 ```
