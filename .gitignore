@@ -1,7 +1,7 @@
 venv/
 __pycache__/
+.obsidian/
 
 # IDE settings
 .vscode/
 
-.obsidian/
